@@ -1,0 +1,38 @@
+{
+	"name": "atext-changeset",
+	"version": "0.1.0",
+  "description": "Operational Transformation for rich-text editors",
+  "author": "Dmitry Uvarov <uvarov.dl@gmail.com>",
+  "license": "MIT",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmitryuv/atext-changeset.git"
+  },
+
+  "keywords": [
+    "ot", "rich text", "easysync", "changeset"
+  ],
+
+  "bugs": {
+    "url": "https://github.com/dmitryuv/atext-changeset/issues"
+  },
+
+  "homepage": "https://github.com/dmitryuv/atext-changeset",
+  
+  "directories": {
+    "test": "test"
+  },
+
+  "dependencies": {
+      "ot-fuzzer": "~1"
+  },
+
+  "devDependencies": {
+    "mocha": "~1"
+  },
+
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  }
+}
