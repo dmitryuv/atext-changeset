@@ -38,7 +38,7 @@ Changeset is an ordered set of operations, there are 4 types of them:
 3. Insert
 4. Remove
 
-The changeset can be applied to the ADocument. **ADocument** is a internal rich-text document representation that stores it as an array of lines, where each line is an object containing text and its attributes. Additionaly each document have **Attribute Pool** – a dictionary of all formatting rules used in the document. It allows us to save a lot of bytes in the storage.
+The changeset can be applied to the ADocument. **ADocument** is an internal rich-text document representation that stores it as an array of lines, where each line is an object containing text and its attributes. Additionaly each document have **Attribute Pool** – a dictionary of all formatting rules used in the document. It allows us to save a lot of bytes in the storage.
 
 To start you need a document, so you either create empty one or start with a plain text:
 
@@ -128,7 +128,7 @@ There are 2 types of operations for the attributes:
 * Format
 * Remove format
 
-If you have an ```img``` attribute and want to override its value with different URL, you can't just perform format with the new URL, you should first remove original attribute with ```Remove``` operation, and then ```Format``` it again. This is true for any attribute key, there can't be 2 keys with the same name. But usually you shouldn't bother, ```Builder``` will remove previous value this for you.
+If you have an ```img``` attribute and want to override its value with different URL, you can't just perform format with the new URL, you should first remove original attribute with ```Remove``` operation, and then ```Format``` it again. This is true for any attribute key, there can't be 2 keys with the same name. But usually you shouldn't bother, ```Builder``` will remove previous value for you.
 
 Creating attributes list:
 ```js

@@ -1,6 +1,6 @@
 {
-	"name": "atext-changeset",
-	"version": "0.1.0",
+  "name": "atext-changeset",
+  "version": "0.1.0",
   "description": "Operational Transformation for rich-text editors",
   "author": "Dmitry Uvarov <uvarov.dl@gmail.com>",
   "license": "MIT",
