@@ -8,12 +8,15 @@ This implementation is written from scratch and differs from Etherpad's [Changes
 * New attribute operation added: ^X, that removes attribute with index X from the text. Unlike original implementation, the format should be removed explicitly.
 * "Remove text" operation should be accompanied by the text and its attributes that is being removed.
 * As a result, invert() function is self-sufficient and does not require specific snapshot version to undo the operation.
-* There should be no code path or situation without explicit check for operation validity to avoid breaked documents. Everything should be covered, period.
+* There should be no code path or situation without explicit check for operation validity to avoid breaked documents. Nothing slip through the cracks, period.
 * It works with natural document representation – lines, not a big string. This reduces computation complexity on big documents.
 * Complete tests coverage.
 
 
-Resulting implementation is fast, solid and reliable. **Bonus**: it's compatible with [ShareJS ottypes API](https://github.com/ottypes/docs) that allows you to easily integrate it with existing OT-aware realtime backend. It features all basic OT operations:
+Resulting implementation is fast, solid and reliable. **Bonus**: it's compatible with [ShareJS ottypes API](https://github.com/ottypes/docs) that allows you to easily integrate it with existing OT-aware realtime backend. 
+
+It features all base OT operations:
+
 * Composition
 * Transformation
 * Invertion
@@ -116,10 +119,46 @@ cs.applyTo(doc);
 ```
 
 
-### Bonus: Transform Position
-Position is a 2-dimension location of the user's caret in the document. Specified by line and character. Useful for implementing presense and showing where other's people carets and selections are (like in Google Docs).
+## Attributes
+
+Attributes are used to describe formatting. Each attribute is a key/value pair that can be anything. For example, rich text editors can use ```bold: true``` or ```img: http://....jpg``` and then render them accordingly.
+
+There are 2 types of operations for the attributes:
+
+* Format
+* Remove format
+
+If you have an ```img``` attribute and want to override its value with different URL, you can't just perform format with the new URL, you should first remove original attribute with ```Remove``` operation, and then ```Format``` it again. This is true for any attribute key, there can't be 2 keys with the same name. But usually you shouldn't bother, ```Builder``` will remove previous value this for you.
+
+Creating attributes list:
 ```js
-var newPos = cs.transformPosition(pos, side);
+// creates an empty list
+var format = new OT.AttributeList();
+
+// add format attribute
+format.addFormatOp(key, value);
+
+// remove format attribute
+format.addRemoveOp(key, value);
+
+// or chain calls
+var format = new OT.AttributeList().addFormat(...).removeFormat(...);
+```
+
+There is one built-in attribute name that shouldn't be explicitly used. It's called ```author``` and stores author of the change, if was specified for the ```Builder```. 
+
+## Position
+
+Position is used for presense awareness and drawing carets and selections of other users in the document (like Google Docs). 
+Most of the OT libraries use linear index for the position that only create problems in real life. Seriously, in the editor you have line and character position of the caret, and you should convert it to the linear offset by calculating how many characters you have before the caret, then transform, then split resulting offset again into lines and chars to get the new value in the document space. That's a lot of unnecessary work. 
+
+Here the Position is represented by natural 2-dimension coordinate that can be transformed directly. This makes a huge difference.
+
+```js
+var pos = new Position(char, line);
+
+// transform it against changeset
+var newPos = cs.transformPosition(pos);
 ```
 
 ## Storage and transport
@@ -130,8 +169,10 @@ Before storing or sending a changeset you need to pack it. Just do ```var res = 
 ## TODO
 
 - [ ] Figure out the best way to build for browser.
+- [ ] Create a good client API to iterate over ADocument
 - [ ] Describe how it integrates with ShareJS.
 - [ ] Add some tests for ADocument class and find what could be missing.
+- [ ] Implement diff algorithm from Etherpad
 
 ## License
 MIT
