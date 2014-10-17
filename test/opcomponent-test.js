@@ -80,7 +80,7 @@ describe('OpComponent', function() {
         }, new RegExp('cannot append'));
       assert.throws(function() {
           var c2 = c.clone();
-          c2.attribs = AttributeList.unpack('*0', ['x', 'y']);
+          c2.attribs = AttributeList.unpack('*0', [['x', 'y']]);
           c.clone().append(c2);
         }, new RegExp('cannot append'));
     });
