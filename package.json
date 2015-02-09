@@ -29,7 +29,7 @@
   },
 
   "devDependencies": {
-    "mocha": "~1"
+    "mocha": "~2"
   },
 
   "scripts": {
